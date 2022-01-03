@@ -1,0 +1,31 @@
+DELIMITER $$
+create trigger update_status_for_flight_added after insert on flights
+for each row begin
+SET @airplaneNum = new.airplaneNum;
+UPDATE airplaneinventory SET status = "not available" WHERE airplaneNum = @airplaneNum;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+create trigger update_status_after_delete_flight after delete on flights
+for each row begin
+SET @airplaneNum = old.airplaneNum;
+UPDATE airplaneinventory SET status = "available" WHERE airplaneNum = @airplaneNum;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+create trigger update_status_for_repair_added after insert on repairs
+for each row begin
+SET @airplaneNum = new.airplaneNum;
+UPDATE airplaneinventory SET status = "not available" WHERE airplaneNum = @airplaneNum;
+end$$
+DELIMITER ;
+
+DELIMITER $$
+create trigger update_status_after_delete_repair after delete on repairs
+for each row begin
+SET @airplaneNum = old.airplaneNum;
+UPDATE airplaneinventory SET status = "available" WHERE airplaneNum = @airplaneNum;
+end$$
+DELIMITER ;
